@@ -69,13 +69,13 @@
 			isa = PBXGroup;
 			children = (
 				233D730B20547B0A001BA9B6 /* MyHash.h */,
+				232C306F20547750004696DA /* Tokenizer.cpp */,
 				230D15EB205102C80012D9B5 /* main.cpp */,
 				232C307120547751004696DA /* main 2.cpp */,
 				232C306B20547750004696DA /* Decrypter.cpp */,
 				232C306C20547750004696DA /* provided.h */,
 				232C306D20547750004696DA /* Translator.cpp */,
 				232C307020547751004696DA /* WordList 2.cpp */,
-				232C306F20547750004696DA /* Tokenizer.cpp */,
 			);
 			path = project4;
 			sourceTree = "<group>";

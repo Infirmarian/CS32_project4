@@ -8,10 +8,23 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
-#include "MyHash 2.h"
+#include "MyHash.h"
+#include "provided.h"
 
 int main(int argc, const char * argv[]) {
+    Tokenizer t(" ");
+    vector<string> v = t.tokenize("Hello squadron, I hope that you have an AWESOME!!! day.");
+    vector<string>::iterator i = v.begin();
+    while(i!= v.end()){
+        cout<<*i<<endl;
+        i++;
+    }
+    
+    
+    
+    
     // insert code here...
   string myList[]= {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
     cout << "Hello, World!\n";
