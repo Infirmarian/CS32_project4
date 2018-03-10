@@ -26,7 +26,7 @@ vector<string> TokenizerImpl::tokenize(const std::string& s) const
     string tempWord = "";
     vector<string> tokens;
     for(int i=0; i<s.length(); i++){
-        if(m_delimiters.find(s[i]) != m_delimiters.end()){
+        if(m_delimiters.find(s[i]) != m_delimiters.end()){ //the current character was a delimiter
             if(tempWord == "")
                 continue;
             tokens.push_back(tempWord);
@@ -36,7 +36,7 @@ vector<string> TokenizerImpl::tokenize(const std::string& s) const
         }
     }
     if(tempWord != "")
-        tokens.push_back(tempWord);
+        tokens.push_back(tempWord); //push temp word, (case when s doesn't end in a delimiter)
     return tokens;
 }
 

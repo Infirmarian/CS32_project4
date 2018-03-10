@@ -14,12 +14,41 @@ using namespace std;
 #include "provided.h"
 
 int main(int argc, const char * argv[]) {
-    Tokenizer t(" ");
-    vector<string> v = t.tokenize("Hello squadron, I hope that you have an AWESOME!!! day.");
-    vector<string>::iterator i = v.begin();
-    while(i!= v.end()){
-        cout<<*i<<endl;
-        i++;
+    string list[] = {
+        "havoc",
+        "hawthorn",
+        "hawthorne",
+        "hawthorns",
+        "hay",
+        "haycock",
+        "haycocks",
+        "haYdn",
+        "hayer",
+        "hayers",
+        "hayes",
+        "HayfieldS",
+        "hayfork",
+        "hayforks",
+        "haying",
+        "hayings",
+        "hayloft",
+        "haylofts",
+        "haymaker",
+        "haymakers",
+        "haymow",
+        "haymows",
+        "hayrack",
+        "hayracks",
+        "hayrick",
+        "hayricks",
+        "HAYRIDE"
+    };
+    WordList w;
+    if(!w.loadWordList("/Users/geil/Desktop/C++/CS32/project4/project4/wordlist.txt"))
+        cout<<"Unable to load word list";
+    for(int i=0; i<27; i++){
+        if(w.contains(list[i]))
+            cout<<"Number "<<i<<": List contains "<<list[i]<<endl;
     }
     
     

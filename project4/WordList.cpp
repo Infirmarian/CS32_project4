@@ -2,32 +2,69 @@
 #include <string>
 #include <vector>
 #include <functional>
+#include <set>
 #include "MyHash.h"
+#include <fstream>
 using namespace std;
 
 class WordListImpl
 {
 public:
+    ~WordListImpl();
     bool loadWordList(string filename);
     bool contains(string word) const;
     vector<string> findCandidates(string cipherWord, string currTranslation) const;
 private:
+    MyHash<string, int> m_dictionary;
+    string lower(const string& s) const;
 };
+
+WordListImpl::~WordListImpl(){
+    //TODO:??
+}
 
 bool WordListImpl::loadWordList(string filename)
 {
-    return false;  // This compiles, but may not be correct
+    ifstream fileStream(filename);
+    if(fileStream){
+        if(m_dictionary.getNumItems() > 0)
+            m_dictionary.reset(); //reset the dictionary to contain nothing
+        string line;
+        while( getline(fileStream, line)){
+            bool add = true;
+            for(int i=0; i<line.length(); i++){
+                if(isalpha(line[i]) || line[i] == '\'')
+                    continue;
+                else{
+                    add = false;
+                    break; // exit the loop
+                }
+            }
+            if(add) //adds the lowercase version of the string to the dictionary
+                m_dictionary.associate(lower(line), 1); //TODO: should this associate a value?
+            }
+    return true;  // finished reading input
+    }
+    return false; //file was not able to be opened
 }
 
 bool WordListImpl::contains(string word) const
 {
-    return false; // This compiles, but may not be correct
+    return (m_dictionary.find(lower(word)) != nullptr);
 }
 
 vector<string> WordListImpl::findCandidates(string cipherWord, string currTranslation) const
 {
     return vector<string>();  // This compiles, but may not be correct
 }
+//this function creates a new lower-case string from an input string
+string WordListImpl::lower(const string& s) const{
+    string ret="";
+    for(int i=0; i<s.length(); i++)
+        ret  = ret + static_cast<char>(tolower(s[i]));
+    return ret;
+}
+
 
 //***** hash functions for string, int, and char *****
 

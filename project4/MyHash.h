@@ -2,7 +2,7 @@
 
 // Skeleton for the MyHash class template.  You must implement the first seven
 // member functions; we have implemented the eighth.
-
+#include <iostream> //remove this later TODO
 template<typename KeyType, typename ValueType>
 class MyHash
 {
@@ -34,6 +34,7 @@ public:
             return;
         }
         m_nItems ++; // not just updating key, but adding a new item
+        
         if(static_cast<double>(m_nItems)/m_size > m_maxLoad){
             Node** tempTable = new Node* [m_size * 2]; //new table
             for(int i=0; i<m_size*2; i++)
@@ -42,9 +43,10 @@ public:
             for(int i=0; i<m_size; i++){
                 if(m_table[i] != nullptr){
                     Node* ptr = m_table[i];
+                    Node* tempPtr;
                     while(ptr != nullptr){
-                        Node* tempPtr = ptr->next;
-                        int b = getBucket(key, m_size*2);
+                        tempPtr = ptr->next;
+                        int b = getBucket(ptr->key, m_size*2);
                         ptr->next = nullptr; //delete old link between the lists when moving a node over
                         insertToTable(b, ptr, tempTable); //insert into the new table
                         ptr = tempPtr;
@@ -94,6 +96,23 @@ public:
       // C++11 syntax for preventing copying and assignment
     MyHash(const MyHash&) = delete;
     MyHash& operator=(const MyHash&) = delete;
+    
+    
+    /*
+    ///////DELETE THIS
+    void dump(){
+        for(int i=0; i<m_size; i++){
+            Node* ptr = m_table[i];
+            while(ptr != nullptr){
+                std::cout<<ptr->key<<std::endl;
+                ptr = ptr->next;
+            }
+        }
+    }
+    ///////////
+    */
+    
+    
 
 private:
     
