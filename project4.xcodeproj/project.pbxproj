@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		230D15EC205102C80012D9B5 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 230D15EB205102C80012D9B5 /* main.cpp */; };
+		232C307220547751004696DA /* Decrypter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 232C306B20547750004696DA /* Decrypter.cpp */; };
+		232C307320547751004696DA /* Translator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 232C306D20547750004696DA /* Translator.cpp */; };
+		232C307420547751004696DA /* Tokenizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 232C306F20547750004696DA /* Tokenizer.cpp */; };
+		232C307520547751004696DA /* WordList 2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 232C307020547751004696DA /* WordList 2.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +29,13 @@
 /* Begin PBXFileReference section */
 		230D15E8205102C80012D9B5 /* project4 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = project4; sourceTree = BUILT_PRODUCTS_DIR; };
 		230D15EB205102C80012D9B5 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		232C306B20547750004696DA /* Decrypter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Decrypter.cpp; sourceTree = "<group>"; };
+		232C306C20547750004696DA /* provided.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = provided.h; sourceTree = "<group>"; };
+		232C306D20547750004696DA /* Translator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Translator.cpp; sourceTree = "<group>"; };
+		232C306F20547750004696DA /* Tokenizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tokenizer.cpp; sourceTree = "<group>"; };
+		232C307020547751004696DA /* WordList 2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "WordList 2.cpp"; sourceTree = "<group>"; };
+		232C307120547751004696DA /* main 2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "main 2.cpp"; sourceTree = "<group>"; };
+		233D730B20547B0A001BA9B6 /* MyHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyHash.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +68,14 @@
 		230D15EA205102C80012D9B5 /* project4 */ = {
 			isa = PBXGroup;
 			children = (
+				233D730B20547B0A001BA9B6 /* MyHash.h */,
 				230D15EB205102C80012D9B5 /* main.cpp */,
+				232C307120547751004696DA /* main 2.cpp */,
+				232C306B20547750004696DA /* Decrypter.cpp */,
+				232C306C20547750004696DA /* provided.h */,
+				232C306D20547750004696DA /* Translator.cpp */,
+				232C307020547751004696DA /* WordList 2.cpp */,
+				232C306F20547750004696DA /* Tokenizer.cpp */,
 			);
 			path = project4;
 			sourceTree = "<group>";
@@ -119,6 +137,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				232C307220547751004696DA /* Decrypter.cpp in Sources */,
+				232C307420547751004696DA /* Tokenizer.cpp in Sources */,
+				232C307320547751004696DA /* Translator.cpp in Sources */,
+				232C307520547751004696DA /* WordList 2.cpp in Sources */,
 				230D15EC205102C80012D9B5 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
