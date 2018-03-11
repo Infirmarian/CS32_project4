@@ -5,6 +5,7 @@
 #include <set>
 #include "MyHash.h"
 #include <fstream>
+#include <iostream>
 using namespace std;
 
 class WordListImpl
@@ -16,7 +17,9 @@ public:
     vector<string> findCandidates(string cipherWord, string currTranslation) const;
 private:
     MyHash<string, int> m_dictionary;
+    MyHash<string, vector<string>> m_patterns;
     string lower(const string& s) const;
+    string convertToPattern(const string& s) const;
 };
 
 WordListImpl::~WordListImpl(){
@@ -43,6 +46,12 @@ bool WordListImpl::loadWordList(string filename)
             if(add) //adds the lowercase version of the string to the dictionary
                 m_dictionary.associate(lower(line), 1); //TODO: should this associate a value?
             }
+        std::cout<<convertToPattern("apollo")<<endl;
+        std::cout<<convertToPattern("blotto")<<endl;
+        std::cout<<convertToPattern("piazza")<<endl;
+        std::cout<<convertToPattern("chilli")<<endl;
+        std::cout<<convertToPattern("steppe")<<endl;
+
     return true;  // finished reading input
     }
     return false; //file was not able to be opened
@@ -62,6 +71,27 @@ string WordListImpl::lower(const string& s) const{
     string ret="";
     for(int i=0; i<s.length(); i++)
         ret  = ret + static_cast<char>(tolower(s[i]));
+    return ret;
+}
+string WordListImpl::convertToPattern(const string &s) const{
+    string ret = "";
+    char begin = 'A';
+    bool go=true;
+    for(int i=0; i<s.length(); i++){
+        go = true;
+        for(int j = i-1; j>=0; j--){
+            if(s[i] == s[j]){
+                ret = ret + ret[j];
+                go = false;
+                break;
+            }
+        }
+        if(go){
+            ret = ret + begin;
+            begin++;
+        }
+        
+    }
     return ret;
 }
 
