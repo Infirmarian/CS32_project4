@@ -32,6 +32,8 @@ bool WordListImpl::loadWordList(string filename)
     if(fileStream){
         if(m_dictionary.getNumItems() > 0)
             m_dictionary.reset(); //reset the dictionary to contain nothing
+        if(m_patterns.getNumItems() > 0)
+            m_patterns.reset();
         string line;
         while( getline(fileStream, line)){
             bool add = true;
@@ -43,14 +45,18 @@ bool WordListImpl::loadWordList(string filename)
                     break; // exit the loop
                 }
             }
-            if(add) //adds the lowercase version of the string to the dictionary
+            if(add){ //adds the lowercase version of the string to the dictionary
                 m_dictionary.associate(lower(line), 1); //TODO: should this associate a value?
+            //add pattern to the pattern dictionary
+                string pattern = convertToPattern(lower(line));
+                if(m_patterns.find(pattern) != nullptr){
+                    m_patterns.find(pattern)->push_back(line);
+                }else{
+                    m_patterns.associate(pattern, vector<string>());
+                    m_patterns.find(pattern)->push_back(line); //TODO: check if there is an easier way to do this
+                }
             }
-        std::cout<<convertToPattern("apollo")<<endl;
-        std::cout<<convertToPattern("blotto")<<endl;
-        std::cout<<convertToPattern("piazza")<<endl;
-        std::cout<<convertToPattern("chilli")<<endl;
-        std::cout<<convertToPattern("steppe")<<endl;
+            }
 
     return true;  // finished reading input
     }
@@ -64,8 +70,34 @@ bool WordListImpl::contains(string word) const
 
 vector<string> WordListImpl::findCandidates(string cipherWord, string currTranslation) const
 {
-    return vector<string>();  // This compiles, but may not be correct
+    if(cipherWord.length() != currTranslation.length()){
+        cerr<<"Error, cipherWord is not the same length as currTranslation, returning an empty vector"<<endl;
+        return vector<string>();
+    }
+    string pattern = convertToPattern(lower(cipherWord));
+    if(m_patterns.find(pattern) == nullptr) //no candidates
+        return vector<string>(); //so return an empty vector
+    
+    vector<string> words = *(m_patterns.find(pattern));
+    vector<string> toReturn;
+    for(vector<string>::iterator i = words.begin(); i!= words.end(); i++){ //for each word in the pattern, compare each character to see if it should be thrown out
+        bool toAdd = true;
+        for(int k =0; k<(*i).length(); k++){
+            if(currTranslation[k] == '?')
+                continue;
+            if(tolower(currTranslation[k]) != (*i)[k])
+                toAdd = false;
+        }
+        if(toAdd)
+            toReturn.push_back(*i);
+    }
+    
+    return toReturn;
+    //return vector<string>();  // This compiles, but may not be correct
 }
+
+
+
 //this function creates a new lower-case string from an input string
 string WordListImpl::lower(const string& s) const{
     string ret="";

@@ -13,7 +13,13 @@ using namespace std;
 #include "MyHash.h"
 #include "provided.h"
 
+
+void f();
 int main(int argc, const char * argv[]) {
+    f();
+    
+    
+    
     string list[] = {
         "havoc",
         "hawthorn",
@@ -50,6 +56,10 @@ int main(int argc, const char * argv[]) {
         if(w.contains(list[i]))
             cout<<"Number "<<i<<": List contains "<<list[i]<<endl;
     }
+    cout<<endl<<endl<<"about to begin to print words of pattern 11"<<endl;
+    vector<string> similarWords = w.findCandidates("xyqbbq", "??otto");
+    for(vector<string>::iterator i = similarWords.begin(); i!= similarWords.end(); i++)
+        cout<<*i<<endl;
     
     
     
@@ -77,3 +87,33 @@ int main(int argc, const char * argv[]) {
     }
     return 0;
 }
+
+
+void f()
+{
+    WordList wl;
+    if ( ! wl.loadWordList("/Users/geil/Desktop/C++/CS32/project4/project4/wordlist.txt"))
+    {
+        cout << "Unable to load word list" << endl;
+        return;
+    }
+    if (wl.contains("onomatopoeia"))
+        cout << "I found onomatopoeia!" << endl;
+    else
+        cout << "Onomatopoeia is not in the word list!" << endl;
+    string cipher = "xyqbbq";
+    string decodedSoFar = "?R????";
+    vector<string> v = wl.findCandidates(cipher, decodedSoFar);
+    if (v.empty())
+        cout << "No matches found" << endl;
+    else
+    {
+        cout << "Found these matches:" << endl;
+        for (size_t k = 0; k < v.size(); k++)
+            cout << v[k] << endl; // writes grotto and troppo
+    }
+}
+
+
+
+
