@@ -53,18 +53,32 @@ int main(int argc, const char * argv[]) {
     if(!w.loadWordList("/Users/geil/Desktop/C++/CS32/project4/project4/wordlist.txt"))
         cout<<"Unable to load word list";
     for(int i=0; i<27; i++){
-        if(w.contains(list[i]))
-            cout<<"Number "<<i<<": List contains "<<list[i]<<endl;
+       // if(w.contains(list[i]))
+       //     cout<<"Number "<<i<<": List contains "<<list[i]<<endl;
     }
     cout<<endl<<endl<<"about to begin to print words of pattern 11"<<endl;
     vector<string> similarWords = w.findCandidates("xyqbbq", "??otto");
     for(vector<string>::iterator i = similarWords.begin(); i!= similarWords.end(); i++)
         cout<<*i<<endl;
     
+    Translator t;
+    if(t.popMapping())
+        cout<<"ERROR, tried to pop mapping from an empty table!"<<endl;
+    if(t.pushMapping("CBYZFQIHVDPOMLNKERXTSGAUWJ", "abcdefghijklmnopqrstuvwxyz"))
+        cout<<"Successfully mapped ABCD to ZYXF"<<endl;
+   
+
+    cout<<"curr translation: "<<t.getTranslation("V ongf SYOC Y.X.")<<endl;
+    t.popMapping();
+    cout<<"curr translation: "<<t.getTranslation("")<<endl;
+    t.popMapping();
+    cout<<"curr translation: "<<t.getTranslation("")<<endl;
+    t.popMapping();
+    cout<<"curr translation: "<<t.getTranslation("")<<endl;
+
+
     
     
-    
-    // insert code here...
   string myList[]= {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
     cout << "Hello, World!\n";
     MyHash<int, char> htable(0);
