@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <functional>
-#include <set>
+#include <set> //TODO: should keep this as ordered stuff?
 #include "MyHash.h"
 #include <fstream>
 #include <iostream>

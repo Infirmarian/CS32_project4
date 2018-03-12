@@ -24,7 +24,7 @@ bool TranslatorImpl::pushMapping(string ciphertext, string plaintext)
 {
     string map = m_mappingStack[m_mappingStack.size()-1]; //map equals current most recent translation
     for(int i=0; i<plaintext.length(); i++){
-        if(map[toupper(plaintext[i]) - 'A'] != '?' && map[toupper(plaintext[i])] != toupper(ciphertext[i])) //if current cipher contradicts a letter, the pushed mapping is rejected
+        if(map[toupper(plaintext[i]) - 'A'] != '?' && map[toupper(plaintext[i])-'A'] != toupper(ciphertext[i])) //if current cipher contradicts a letter, the pushed mapping is rejected
             return false;
         map[toupper(plaintext[i]) -'A'] = toupper(ciphertext[i]);
     }
