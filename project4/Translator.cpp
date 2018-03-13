@@ -14,17 +14,21 @@ public:
 private:
     struct map{
         //each character maps from plain to encrypted (
-        string plainText;
-        string encText;
+                                // cipher->plainText
+        string encryptToPlain;  // A->C, B->A represented as CA???...
+        string plainToEncrypt;  // A->C, B->A represented as B?A??...
     };
     char translateOneChar(const char& c) const;
     vector<map> m_mappingStack;
-    string emptyString = "??????????????????????????"; //sloppy
 };
 TranslatorImpl::TranslatorImpl(){
     map m;
-    m.encText = emptyString;
-    m.plainText = emptyString;
+    string init;
+    for(int i=0; i<26; i++){
+        init +='?';
+    }
+    m.encryptToPlain = init;
+    m.plainToEncrypt=init;
     m_mappingStack.push_back(m);
     
 }
@@ -36,17 +40,18 @@ bool TranslatorImpl::pushMapping(string ciphertext, string plaintext)
 {
     if(ciphertext.length() != plaintext.length())
         return false; //mappings were a different length
-    map m = m_mappingStack[m_mappingStack.size()-1]; //map equals current most recent translation
-    
+    map m;
+    m.plainToEncrypt = m_mappingStack[m_mappingStack.size()-1].plainToEncrypt;
+    m.encryptToPlain = m_mappingStack[m_mappingStack.size()-1].encryptToPlain;
     for(int i=0; i<plaintext.length(); i++){
-        if(m.plainText[toupper(plaintext[i]) - 'A'] != '?' && m.plainText[toupper(plaintext[i])-'A'] != toupper(ciphertext[i])) //if current cipher contradicts a letter, the pushed mapping is rejected
-            return false;
         if(!isalpha(ciphertext[i]) || !isalpha(plaintext[i]))
             return false; //one of the two contained non-numeric characters
-        
-        
-        m.plainText[toupper(plaintext[i]) -'A'] = toupper(ciphertext[i]);
-        m.encText[toupper(ciphertext[i]) -'A'] = toupper(plaintext[i]);
+       if(m.encryptToPlain[toupper(ciphertext[i]) -'A'] != toupper(plaintext[i]) && m.encryptToPlain[toupper(ciphertext[i]) -'A'] != '?')
+           return false;
+        if(m.plainToEncrypt[toupper(plaintext[i])-'A'] != toupper(ciphertext[i]) && m.plainToEncrypt[toupper(plaintext[i])-'A'] != '?')
+            return false;
+        m.encryptToPlain[toupper(ciphertext[i])-'A'] = toupper(plaintext[i]);
+        m.plainToEncrypt[toupper(plaintext[i])-'A'] = toupper(ciphertext[i]);
     }
     m_mappingStack.push_back(m);
     return true;  // This compiles, but is totally correct! Heck yeah!
@@ -78,9 +83,8 @@ string TranslatorImpl::getTranslation(const string& ciphertext) const
 }
 
 char TranslatorImpl::translateOneChar(const char& c) const{
-    int l =m_mappingStack[m_mappingStack.size()-1].plainText.length();
-    for(int i=0; i<l; i++){
-        if((m_mappingStack[m_mappingStack.size()-1]).plainText[i] == toupper(c)){
+    for(int i=0; i<26; i++){
+        if((m_mappingStack[m_mappingStack.size()-1]).plainToEncrypt[i] == toupper(c)){
             return 'A' + i;
         }
     }

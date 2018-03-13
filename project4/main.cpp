@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cassert>
 using namespace std;
 #include "MyHash.h"
 #include "provided.h"
@@ -50,8 +51,14 @@ int main(int argc, const char * argv[]) {
         "HAYRIDE"
     };
     Decrypter d;
+    Translator t;
+    cout<<t.pushMapping("xydv", "abcd");
+    cout<<t.pushMapping("xy", "ab");
+    cout<<t.pushMapping("xy", "bd");
+    cout<<t.pushMapping("bq", "ab");
+    cout<<t.getTranslation("xydv")<<endl;
     d.load("/Users/geil/Desktop/C++/CS32/project4/project4/wordlist.txt");
-    vector<string> words = d.crack("Trcy oyc koon oz rweelycbb vmobcb, wyogrcn oecyb; hjg ozgcy tc moox bo moya wg grc vmobck koon grwg tc ko yog bcc grc oyc trlvr rwb hccy oecyck zon jb. -Rcmcy Xcmmcn");
+    vector<string> words = d.crack("Jxwpjq qwrla glcu pcx qcn xkvv dw uclw ekarbbckpjwe dq jzw jzkpta jzrj qcn ekep'j ec jzrp dq jzw cpwa qcn eke ec. -Urls Jxrkp");
     for(int i=0;i<words.size(); i++)
         cout<<words[i]<<endl;
     /*
