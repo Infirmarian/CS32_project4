@@ -51,7 +51,7 @@ int main(int argc, const char * argv[]) {
     };
     Decrypter d;
     d.load("/Users/geil/Desktop/C++/CS32/project4/project4/wordlist.txt");
-    vector<string> words = d.crack("Jxwpjq qwrla glcu pcx qcn");
+    vector<string> words = d.crack("Trcy oyc koon oz rweelycbb vmobcb, wyogrcn oecyb; hjg ozgcy tc moox bo moya wg grc vmobck koon grwg tc ko yog bcc grc oyc trlvr rwb hccy oecyck zon jb. -Rcmcy Xcmmcn");
     for(int i=0;i<words.size(); i++)
         cout<<words[i]<<endl;
     /*

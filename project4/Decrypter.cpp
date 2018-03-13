@@ -1,7 +1,7 @@
 #include "provided.h"
 #include <string>
 #include <vector>
-#include <fstream>
+#include <iostream>
 using namespace std;
 
 class DecrypterImpl
@@ -50,31 +50,15 @@ vector<string> DecrypterImpl::crack(const string& ciphertext)
     }
     
     return sentences;
-    
-    
-    string leastTranslated;
-    int leastTCount=0;
-    for(vector<string>::iterator i=words.begin(); i!= words.end(); i++){
-        if(leastTCount < countQuestions(*i)){
-            leastTCount = countQuestions(*i);
-            leastTranslated = *i;
-        }
-    }
-    if(leastTCount == 0) //no untranslated words in the sentance
-        return words;
-    
-    vector<string> possibleTranslations = m_wordList.findCandidates(leastTranslated, t.getTranslation(leastTranslated));
-    
-    return words;  // This compiles, but may not be correct
 }
 vector<string> DecrypterImpl::recDecrypt(vector<string> currTranslation, vector<string> cipher){
-
     //check if all the words in currTranslation are complete (no question marks)
     bool doneTranslating = true;
     for(int i=0; i<currTranslation.size(); i++)
-        if(countQuestions(currTranslation[i]) != 0)
+        if(countQuestions(currTranslation[i]) != 0){
             doneTranslating = false;
-    
+            break;
+        }
     if(doneTranslating){ //no question marks in the text, indicating that a complete translation was done
         //check if all words are in the dictionary
         bool allWords = true;
@@ -84,23 +68,25 @@ vector<string> DecrypterImpl::recDecrypt(vector<string> currTranslation, vector<
                 break;
             }
         if(allWords)
-        return currTranslation;
+            return currTranslation;
+        else
+            return vector<string>(); //all words were translated, but there was non-english words in there
     }
-    
+    //get translation based on current cipher and translation
     Translator t;
     string enc;
     string ptext;
     for(int i=0; i<currTranslation.size(); i++){
         for(int k=0; k<currTranslation[i].length(); k++){
-            if(currTranslation[i][k] != '?'){
+            if(currTranslation[i][k] != '?' && currTranslation[i][k] != '\''){
                 ptext = ptext + currTranslation[i][k];
                 enc = enc + cipher[i][k];
             }
             
         }
     }
-    t.pushMapping(enc, ptext); //update the current mapping with the translation between currTranslation and cipher
-   
+    if(!t.pushMapping(enc, ptext)) //update the current mapping with the translation between currTranslation and cipher
+        std::cerr<<"error, mapping was not able to be pushed!"<<endl;
     //find longest unknown word
     int longestPos=-1;
     int longestUnknownValue = -1;
@@ -117,7 +103,8 @@ vector<string> DecrypterImpl::recDecrypt(vector<string> currTranslation, vector<
     vector<string> candidates = m_wordList.findCandidates(cipher[longestPos], currTranslation[longestPos]);
     //vector to return. Contains "sentences"
     vector<string> toReturn;
-
+    vector<string> temp;
+    //return an empty vector if there are no candidates
     for(int i=0; i<candidates.size(); i++){
         if(!t.pushMapping(cipher[longestPos], candidates[i]))
             continue; //translation contradicted a previous translation
@@ -125,16 +112,19 @@ vector<string> DecrypterImpl::recDecrypt(vector<string> currTranslation, vector<
         for(int i=0; i<currTranslation.size(); i++){
             currTranslation[i] = t.getTranslation(cipher[i]);
         }
-        vector<string> temp = recDecrypt(currTranslation, cipher);
+        temp = recDecrypt(currTranslation, cipher);
         string r = "";
         for(int i=0; i<temp.size(); i++)
             r+=temp[i];
-        r+="\n";
-        if(!temp.empty())
-        toReturn.push_back(r);
-        
+        //std::cout<<r<<std::endl;
+
+        if(!temp.empty()){
+            toReturn.push_back(r);
+        }
+        temp.clear();
         t.popMapping();
     }
+    candidates.clear();
     
     return toReturn;
 }
