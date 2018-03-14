@@ -50,10 +50,10 @@ bool WordListImpl::loadWordList(string filename)
             //add pattern to the pattern dictionary
                 string pattern = convertToPattern(lower(line));
                 if(m_patterns.find(pattern) != nullptr){
-                    m_patterns.find(pattern)->push_back(line);
+                    m_patterns.find(pattern)->push_back(lower(line));
                 }else{
                     m_patterns.associate(pattern, vector<string>());
-                    m_patterns.find(pattern)->push_back(line); //TODO: check if there is an easier way to do this
+                    m_patterns.find(pattern)->push_back(lower(line)); //TODO: check if there is an easier way to do this
                 }
             }
             }
@@ -112,7 +112,7 @@ string WordListImpl::convertToPattern(const string &s) const{
     for(int i=0; i<s.length(); i++){
         go = true;
         for(int j = i-1; j>=0; j--){
-            if(s[i] == s[j]){
+            if(tolower(s[i]) == tolower(s[j])){
                 ret = ret + ret[j];
                 go = false;
                 break;

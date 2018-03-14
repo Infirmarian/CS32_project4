@@ -57,8 +57,8 @@ int main(int argc, const char * argv[]) {
     cout<<t.pushMapping("xy", "bd");
     cout<<t.pushMapping("bq", "ab");
     cout<<t.getTranslation("xydv")<<endl;
-    d.load("/Users/geil/Desktop/C++/CS32/project4/project4/wordlist.txt");
-    vector<string> words = d.crack("G lbbm qfbbm GLMBBM!");
+    d.load("/Users/geil/Desktop/C++/CS32/project4/project4/testList.txt");
+    vector<string> words = d.crack("smxsdg SGOSDG gfvgx!!");
     for(int i=0;i<words.size(); i++)
         cout<<words[i]<<endl;
     return 0;
