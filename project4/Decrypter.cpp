@@ -1,7 +1,7 @@
 #include "provided.h"
 #include <string>
 #include <vector>
-#include <iostream>
+#include <algorithm>
 using namespace std;
 
 class DecrypterImpl
@@ -39,16 +39,16 @@ vector<string> DecrypterImpl::crack(const string& ciphertext)
         string s="";
         int dec = 0;
         for(int k=0; k<ciphertext.length(); k++){
-            if(isalpha(ciphertext[k])){
+            if(isalpha(ciphertext[k]) || ciphertext[k] == '\''){
                 s = s+decryptedWords[i][dec];
                 dec++;
             }
             else
-                s = s+ciphertext[k];
+                s = s+ciphertext[k]; //only prints out non-letter, non-apostrophe characters from the cipher
         }
         sentences.push_back(s);
     }
-    
+    sort(sentences.begin(), sentences.end());
     return sentences;
 }
 vector<string> DecrypterImpl::recDecrypt(vector<string> currTranslation, vector<string> cipher){
@@ -67,8 +67,14 @@ vector<string> DecrypterImpl::recDecrypt(vector<string> currTranslation, vector<
                 allWords = false;
                 break;
             }
-        if(allWords)
+        if(allWords){
+            string s="";
+            for(vector<string>::iterator i=currTranslation.begin(); i!=currTranslation.end(); i++)
+                s+= *i;
+            currTranslation.clear();
+            currTranslation.push_back(s);
             return currTranslation;
+        }
         else
             return vector<string>(); //all words were translated, but there was non-english words in there
     }
@@ -86,8 +92,8 @@ vector<string> DecrypterImpl::recDecrypt(vector<string> currTranslation, vector<
         }
     }
     if(!t.pushMapping(enc, ptext)) //update the current mapping with the translation between currTranslation and cipher
-        std::cerr<<"error, mapping was not able to be pushed!"<<endl;
-    //find longest unknown word
+        return vector<string>();
+        //find longest unknown word
     int longestPos=-1;
     int longestUnknownValue = -1;
     for(int i=0; i<currTranslation.size(); i++){
@@ -102,7 +108,7 @@ vector<string> DecrypterImpl::recDecrypt(vector<string> currTranslation, vector<
     //list of all possible translations of longest possible word
     vector<string> candidates = m_wordList.findCandidates(cipher[longestPos], currTranslation[longestPos]);
     //vector to return. Contains "sentences"
-    vector<string> toReturn;
+   // vector<string> toReturn;
     vector<string> temp;
     //return an empty vector if there are no candidates
     for(int i=0; i<candidates.size(); i++){
@@ -112,21 +118,15 @@ vector<string> DecrypterImpl::recDecrypt(vector<string> currTranslation, vector<
         for(int i=0; i<currTranslation.size(); i++){
             currTranslation[i] = t.getTranslation(cipher[i]);
         }
-        temp = recDecrypt(currTranslation, cipher);
-        string r = "";
-        for(int i=0; i<temp.size(); i++)
-            r+=temp[i];
-        //std::cout<<r<<std::endl;
-
-        if(!temp.empty()){
-            toReturn.push_back(r);
-        }
-        temp.clear();
+        vector<string> tmp =recDecrypt(currTranslation, cipher);
+        
+        if(!tmp.empty())
+            temp.insert(temp.end(), tmp.begin(), tmp.end());
         t.popMapping();
     }
     candidates.clear();
     
-    return toReturn;
+    return temp;
 }
 
 int DecrypterImpl::countQuestions(const string &s) const{

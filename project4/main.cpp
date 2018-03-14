@@ -58,32 +58,9 @@ int main(int argc, const char * argv[]) {
     cout<<t.pushMapping("bq", "ab");
     cout<<t.getTranslation("xydv")<<endl;
     d.load("/Users/geil/Desktop/C++/CS32/project4/project4/wordlist.txt");
-    vector<string> words = d.crack("Jxwpjq qwrla glcu pcx qcn xkvv dw uclw ekarbbckpjwe dq jzw jzkpta jzrj qcn ekep'j ec jzrp dq jzw cpwa qcn eke ec. -Urls Jxrkp");
+    vector<string> words = d.crack("G lbbm qfbbm GLMBBM!");
     for(int i=0;i<words.size(); i++)
         cout<<words[i]<<endl;
-    /*
-    
-  string myList[]= {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
-    cout << "Hello, World!\n";
-    MyHash<int, char> htable(0);
-    cout<<htable.getNumItems()<<endl;
-    cout<<htable.getLoadFactor()<<endl;
-    htable.associate(1, 5);
-    htable.associate(1, 33);
-    cout<<htable.getNumItems()<<endl;
-    cout<<htable.getLoadFactor()<<endl;
-    
-    if(char* t = htable.find(1))
-        cout<<"The value is "<<*t<<endl;
-    //htable.associate(1, 77);
-    if(char* t = htable.find(1))
-        cout<<"The value is "<<*t<<endl;
-    cout<<htable.getNumItems()<<endl;
-    for(int i=0; i<10000; i++){
-       // cout<<htable.getNumItems()<<" items in the table with a load of " <<htable.getLoadFactor()<<endl;
-        htable.associate(i, 'a');
-    }
-     */
     return 0;
 }
 
