@@ -35,7 +35,7 @@ public:
         }
         m_nItems ++; // not just updating key, but adding a new item
         
-        if(static_cast<double>(m_nItems)/m_size > m_maxLoad){
+        if(getLoadFactor() > m_maxLoad){
             Node** tempTable = new Node* [m_size * 2]; //new table
             for(int i=0; i<m_size*2; i++)
                 tempTable[i] = nullptr; //set each item in new table to nullptr
@@ -97,20 +97,6 @@ public:
     MyHash(const MyHash&) = delete;
     MyHash& operator=(const MyHash&) = delete;
     
-    
-    /*
-    ///////DELETE THIS
-    void dump(){
-        for(int i=0; i<m_size; i++){
-            Node* ptr = m_table[i];
-            while(ptr != nullptr){
-                std::cout<<ptr->key<<std::endl;
-                ptr = ptr->next;
-            }
-        }
-    }
-    ///////////
-    */
     
     
 

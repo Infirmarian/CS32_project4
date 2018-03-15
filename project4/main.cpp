@@ -17,39 +17,8 @@ using namespace std;
 
 void f();
 int main(int argc, const char * argv[]) {
-    //f();
-    
-    
-    
-    string list[] = {
-        "havoc",
-        "hawthorn",
-        "hawthorne",
-        "hawthorns",
-        "hay",
-        "haycock",
-        "haycocks",
-        "haYdn",
-        "hayer",
-        "hayers",
-        "hayes",
-        "HayfieldS",
-        "hayfork",
-        "hayforks",
-        "haying",
-        "hayings",
-        "hayloft",
-        "haylofts",
-        "haymaker",
-        "haymakers",
-        "haymow",
-        "haymows",
-        "hayrack",
-        "hayracks",
-        "hayrick",
-        "hayricks",
-        "HAYRIDE"
-    };
+    f();
+
     Decrypter d;
     Translator t;
     cout<<t.pushMapping("xydv", "abcd");
@@ -57,10 +26,11 @@ int main(int argc, const char * argv[]) {
     cout<<t.pushMapping("xy", "bd");
     cout<<t.pushMapping("bq", "ab");
     cout<<t.getTranslation("xydv")<<endl;
-    d.load("/Users/geil/Desktop/C++/CS32/project4/project4/testList.txt");
-    vector<string> words = d.crack("smxsdg SGOSDG gfvgx!!");
+    d.load("/Users/geil/Desktop/C++/CS32/project4/project4/wordlist.txt");
+    vector<string> words = d.crack("Axevfvu lvnelvp bxqp mvpprjv rgl bvoop Grnxvgkvuj dqupb jvbp buvrbvl be lqggvu");
     for(int i=0;i<words.size(); i++)
         cout<<words[i]<<endl;
+    cout<<"Hello world!"<<endl;
     return 0;
 }
 

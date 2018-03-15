@@ -13,8 +13,6 @@ private:
     WordList m_wordList;
     int countQuestions(const string& s) const;
     vector<string> recDecrypt(vector<string> currTranslation, vector<string> sentance);
-    bool getTranslation(string& cipherText, string& sentance);
-    string deTokenize(string& withTokens, string& withOutTokens);
 };
 
 bool DecrypterImpl::load(string filename)

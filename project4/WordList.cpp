@@ -5,7 +5,6 @@
 #include <set> //TODO: should keep this as ordered stuff?
 #include "MyHash.h"
 #include <fstream>
-#include <iostream>
 using namespace std;
 
 class WordListImpl
@@ -71,9 +70,9 @@ bool WordListImpl::contains(string word) const
 vector<string> WordListImpl::findCandidates(string cipherWord, string currTranslation) const
 {
     if(cipherWord.length() != currTranslation.length()){
-        cerr<<"Error, cipherWord is not the same length as currTranslation, returning an empty vector"<<endl;
         return vector<string>();
     }
+    
     string pattern = convertToPattern(lower(cipherWord));
     if(m_patterns.find(pattern) == nullptr) //no candidates
         return vector<string>(); //so return an empty vector
@@ -93,7 +92,6 @@ vector<string> WordListImpl::findCandidates(string cipherWord, string currTransl
     }
     
     return toReturn;
-    //return vector<string>();  // This compiles, but may not be correct
 }
 
 

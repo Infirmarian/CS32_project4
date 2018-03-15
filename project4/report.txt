@@ -1,0 +1,292 @@
+Project 4 Report
+Robert Geil
+1.
+In my program, everything is implemented, with no known bugs. One small
+potential error occurs in the decrypt() function of Decrypter.cpp, where
+given certain messages, the program takes unusually long to run. I don't
+know if this is a systematic error, or if I just am not patient enough
+to wait for the program to complete.
+
+2.
+MyHash.h
+	void reset(){
+		table size = 100
+		number of items in table = 0
+		deleteTable() (see below)
+		table = new table (100 elements)
+		for each item in the new table
+			set item to nullptr
+	}
+	void associate(const KeyType& key, const ValueType& value){
+		if find(key)
+			found key's value = passed in value
+			return //only updated a value, nothing needed to be added
+		number of items += 1
+		if(maximum load is exceeded)
+			allocate temporary table of size * 2
+			set each element in temporary table to nullptr
+			for each bucket in the current table
+				for each node in the list at each bucket
+					int b =hash(each node) % size * 2
+					Each node's children are set to nullptr
+					insertToTable(b, node, temporary table) //see func below
+			set size to size * 2
+			delete bucket array (not items in the buckets!)
+
+		int b = hash(key) % size
+		Allocate new node
+		Set node's value to value, and key to key, and next to nullptr
+		insertNodeIntoBucket(b, new node)
+	}
+	const ValueType* find(const KeyType& key) const{
+		int bucket to search = hash(key) % table size
+		if that bucket in the table is empty
+			return nullptr
+		for each item in the linked list of the bucket
+			if the item's key == key
+				return pointer to item
+		return nullptr
+	}
+	void freeList(Node* head){
+		if head == nullptr
+			return;
+		freeList ( head -> next)
+		delete head
+	}
+	void deleteTable(){
+		for each item in table
+			freeList(item)
+		delete [] table
+	}
+	void insertToTable(unsigned int b, Node* n, Node** table){
+		if table[b] == nullptr
+			set table[b] to the new node
+		else
+			pointer to node = table[b]
+			while(pointer != null)
+				pointer = pointer -> next
+			pointer = new node;
+	}
+	void insertNodeIntoBucket(unsigned int b, Node* n){
+		insertToTable(b, n, the main hash table);
+	}
+
+Tokenizer.cpp
+	TokenizerImpl(string separators){
+		for each char in seperators
+			insert that char into an unordered_map
+	}
+	vector<string> TokenizerImpl::tokenize(const std::string& s) const{
+		string tempword
+		vector<string> to return
+		for each char in s
+			if the char is in the table to delimiters
+				if tempword is empty
+					continue
+				insert tempWord into toReturn
+				tempWord = ""
+			else
+				append current char to tempword
+		if tempWord is not empty
+			insert tempWord to toReturn
+		return toReturn
+	}
+
+WordList.cpp
+	bool WordListImpl::loadWordList(string filename){
+		Create filestream
+		if filestream is invalid
+			return false;
+		string line
+		while(getline(filestream, line))
+			for each char in line
+				if char is not alphabetic, and not '
+					should continue = false
+					break
+			if should continue
+				dictionary.associate(line, 1) //1 is a junk value
+				string pattern = convertToPattern(line)
+				if pattern dictionary contains pattern
+					append line to the given pattern's list in the pattern dictionary
+				else
+					patterndictionary.associate(pattern, empty vector of strings)
+					find pattern in pattern dictionary ->vector.push(line)
+		return true
+	}
+
+	vector<string> WordListImpl::findCandidates(string cipherWord, string currTranslation) const{
+		if ciperword.length != currTranslation.length
+			return empty vector
+		pattern = convertToPattern(cipherWord);
+		if !patterndictionary.find(pattern)
+			return false
+		vector<string> words = *(patternDictionary.find(pattern))
+		vector<string> to return;
+		for each word in words
+			for each char in word
+				if the current translation[position] == '?'
+					continue
+				if the currentTranslation[position] != char
+					toAdd = false
+			if toAdd
+				insert word to toReturn
+		return toReturn
+	}
+	string WordListImpl::convertToPattern(const string &s) const{
+		string ret
+		currentCount = 'A'
+		for each char in s
+			for all previous chars in s
+				if(char == previous char)
+					ret += ret[j]
+					break
+			ret += currentCount
+			currentCount++
+		return ret
+	}
+
+Translator.cpp
+    Translator(){
+    	create string of 26 ?s
+    	set plainToEncrypted and encryptedToPlain mappings to the 26 ?s
+    	push those to the mapping "stack"
+    }
+	bool pushMapping(string ciphertext, string plaintext){
+		if ciphertext.length != plaintext.length
+			return false;
+		plainToEncrypt = top of the map stack
+    	encryptToPlain = top of the map stack
+    	for each char in plainText
+        	if plainText[i] or cipherText[i] are not alphabetic
+        		return false;
+       		if the current encrypt to plain != ? or the proposed plaintext (eg proposed mapping contradicts previous mapping)
+           		return false;
+       		if the current plain to encrypt != ? or the proposed cipher text (eg proposed mapping would map multiple characters to one)
+            	return false;
+        	encryptToPlain[toupper(ciphertext[i])-'A'] = toupper(plaintext[i]);
+        	plainToEncrypt[toupper(plaintext[i])-'A'] = toupper(ciphertext[i]);
+    	
+    		m_mappingStack.push_back(m);
+    	return true; 
+	}
+    bool popMapping(){
+    	if number of maps > 1
+    		remove the last map
+    		return true
+    	else
+    		return false
+    }
+    string getTranslation(const string& ciphertext) const{
+    	string ret =""
+    	for char in cipherText
+    		if char is not alphabetic
+    			ret += char
+    		else
+    			lowercase = islower(char)
+    			to add = translateOneChar(char)
+    			if lowercase
+    				ret += tolower(to add)
+    			else
+    				ret += toAdd
+    }
+    char translateOneChar(const char& c) const{
+    	for int i=0, i<26
+    		if toupper(c) == top map.plainToEncrypt[i]
+    			return 'A'+i;
+    	return '?'
+    }
+
+Decrypter.cpp
+	vector<string> crack(const string& ciphertext){
+	Translator t
+    Tokenizer token(".,;!(){}-\"$%^&?0123456789 ")
+    vector words = tokenize ciphertext
+    vector translation
+    string toProcess
+    for each word in words
+        append t.getTranslation(word) to translation
+    vector decryptedWords = recDecrypt(translation, words);
+    vector<string> sentences
+    for each item in decryptedWords
+        string s
+        int dec
+        for each char in cipherText
+            if char is alpha or == apostrophe
+                s += item[dec]
+                dec ++
+            else
+                s  += ciphertext[i]
+        sentences.push_back(s)
+    sort sentences
+    return sentences
+	}
+	int countQuestions(const string& s) const{
+		int count = 0
+		for each char in s
+			if char == '?'
+				count ++
+		return count
+	}
+    vector<string> recDecrypt(vector<string> currTranslation, vector<string> cipher){
+    	if each object in currTranslation has no question marks
+    		doneTranslating = true
+    	if doneTranslating
+    		for each word in currTranslation
+    			if ! wordList.contains(word) (eg is a valid word)
+    				allWords = false
+    		if allWords
+    			string s
+    			for each word in currTranslation
+                	s+= word
+         	   	currTranslation.clear
+           	 	insert s into currTranslation
+           		return currTranslation
+           	else
+           		return empty vector
+        string enc
+        string plainText
+        for each word in currTranslation
+        	for each letter in word
+        		if letter != ? and letter != '
+        			enc += equivelent spot in cipher
+        			plainText += letter
+
+        Translator t;
+        t.pushmapping(enc, plainText);
+
+        Using a nested for loop, find the word that has the most question marks in currTranslation
+
+        vector candidates = wordList.findCandidates (longest cipher, longest currTranslation)
+    	vector temp;
+	    for each candidate
+        	if t.pushmapping(candidate, currTranslation) fails,
+           		continue
+        	for each word in currentTranslation,
+        		set word in currentTranslation to t.translate(word)
+        	vector tmp =recDecrypt(currTranslation, cipher)
+        
+        	if tmp is not empty (indicating a valid recursive trail)
+            	temp.insert tmp
+        	t.popMapping();
+    
+    candidates.clear();
+    
+    return temp;
+
+    }
+
+3.
+	As far as I know, every method satisfies the bigO requirements set forth
+	in the project spec. One exception is the Tokenizer::tokenize(string s)
+	function, which runs in O(S), not O(SP) time, where S is the string
+	length, and P is the number of seperators. This is because I stored my
+	seperators in a hash table, therefore allowing them to be searched in
+	O(1) time, so the tokenize function would run in O(1*S), or O(S) time
+
+
+
+
+
+
+
+
